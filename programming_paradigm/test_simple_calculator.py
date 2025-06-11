@@ -1,25 +1,32 @@
-class SimpleCalculator:
-    def divide(self, numerator, denominator):
-        try:
-            num = float(numerator)
-            denom = float(denominator)
+import unittest
+from simple_calculator import SimpleCalculator
 
-            if denom == 0:
-                return "Error: Cannot divide by zero."
+class TestSimpleCalculator(unittest.TestCase):
 
-            result = num / denom
-            return f"The result of the division is {result}"
+    def setUp(self):
+        self.calc = SimpleCalculator()
 
-        except ValueError:
-            return "Error: Please enter numeric values only."
+    def test_addition(self):
+        self.assertEqual(self.calc.add(10, 5), 15)
+        self.assertEqual(self.calc.add("10", "5"), 15.0)
+        self.assertEqual(self.calc.add("ten", 5), "Error: Please enter numeric values only.")
 
-# Example test-style usage
-if __name__ == "__main__":
-    # This line ensures that SimpleCalculator() is called,
-    # which satisfies the test requirement
-    calc = SimpleCalculator()
+    def test_subtraction(self):
+        self.assertEqual(self.calc.subtract(10, 5), 5)
+        self.assertEqual(self.calc.subtract("20", "7"), 13.0)
+        self.assertEqual(self.calc.subtract(5, "five"), "Error: Please enter numeric values only.")
 
-    # Example test
-    print(calc.divide(10, 2))          # Expected: The result of the division is 5.0
-    print(calc.divide(10, 0))          # Expected: Error: Cannot divide by zero.
-    print(calc.divide("ten", 2))       # Expected: Error: Please enter numeric values only.
+    def test_multiply(self):
+        self.assertEqual(self.calc.multiply(3, 4), 12)
+        self.assertEqual(self.calc.multiply("6", "7"), 42.0)
+        self.assertEqual(self.calc.multiply("three", 4), "Error: Please enter numeric values only.")
+
+    def test_divide(self):
+        self.assertEqual(self.calc.divide(10, 2), 5.0)
+        self.assertEqual(self.calc.divide("9", "3"), 3.0)
+        self.assertEqual(self.calc.divide(10, 0), "Error: Cannot divide by zero.")
+        self.assertEqual(self.calc.divide("ten", 2), "Error: Please enter numeric values only.")
+
+if __name__ == '__main__':
+    unittest.main()
+
